@@ -4,7 +4,7 @@ import argparse
 parser = argparse.ArgumentParser(description="Create estimator parameters for DP-LLM.")
 parser.add_argument("ap_model_path", type=str,
                     help="Path to AnyPrecision model.")
-parser.add_argument("--arr_path", type=str, required=True,
+parser.add_argument("--finetuned_result", type=str, required=True,
                     help="Path for finetuned result.")
 
 parser.add_argument("--private_dir", type=str, default="./estimator_private_values",
@@ -44,16 +44,16 @@ max_prec = args.max_prec
 prec_arr = [bit for bit in range(min_prec, max_prec+1)]
 
 # Load finetuned results
-arr_path = args.arr_path
-p_d, max_mem_dict = torch.load(arr_path)
+finetuned_result = args.finetuned_result
+p_d, max_mem_dict = torch.load(finetuned_result)
 
 # Set directories using model type
 private_dir = os.path.join(args.private_dir, model_type)
 shared_dir = os.path.join(args.shared_dir, model_type)
 
 # Use finetuned file name as save directory
-mid_dir = arr_path.split("/")[-1]
-if len(mid_dir) == 0: mid_dir = arr_path.split("/")[-2]
+mid_dir = finetuned_result.split("/")[-1]
+if len(mid_dir) == 0: mid_dir = finetuned_result.split("/")[-2]
 mid_dir = mid_dir.split(".pt")[0]
 
 # Thresholds for each linear
