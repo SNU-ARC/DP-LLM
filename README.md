@@ -3,7 +3,7 @@
 ## Overview
 Dynamic-Precision LLM (**DP-LLM**) is a model runtime adaptation mechanism that supports dynamic layer-wise precision assignment.
 
-Currently, this repository only contains the performance evaluation codes. The codes for latency measurement will soon be updated.
+_**Warning: Currently, this repository only contains the performance evaluation codes. The codes for latency measurement will soon be updated.**_
 
 ## Prerequisites
 Prerequisites are identical to [Any-Precision LLM](https://github.com/SNU-ARC/any-precision-llm).
@@ -57,18 +57,13 @@ model = DPLLMForCausalLM.from_quantized(model_path,
 - `prefill_by_decode`: For perplexity evaluations, set to `True` for efficient evaluations. When set to `True`, the model will activate dynamic precision assignment during the prefill phase. When set to `False`, max precision will be used for the prefill phase, and dynamic precision assignment will only be active during the decoding phase.  
 
 ## Pre- Fine-tuned results
-Some fine-tuned results are provided for quick evaluation. Load each `.pt` files within the directory using `torch.load`, then provide them as arguments(`max_mem_dict`, `linear_reg_d`, `jl_d` and `T_d`). 
+Some fine-tuned results are provided for quick evaluation. The pre-finetuned results can be found at https://github.com/SNU-ARC/DP-LLM_pre_finetuned.
 
-| Model | Precisions | Memory Budget | Target Precision | Link |
-| :---: | :--------: | :-----------: | :--------------: | :--: |
-| Meta-Llama-3-8B | 3, 4, 5, 6 | 5.0 bits | 3.25 | |
-| | | | 3.5 | |
-| | | | 3.75 | |
-| | | | 4.0 | |
-| | | | 4.25 | |
-| | | | 4.5 | |
-| | | | 4.75 | |
+Load each `.pt` files within the directory using `torch.load`, then provide them as arguments(`max_mem_dict`, `linear_reg_d`, `jl_d` and `T_d`). 
 
+The following configurations are available:
+
+- Meta-Llama-3-8B, 3,4,5,6 bits, 5.0-bit memory budget: 3.25, 3.5, 3.75, 4.0, 4.25, 4.5, 4.75 target precisions
 
 ## Run DP-LLM
 ### 0. Quantize a model using Any-Precision LLM
@@ -111,7 +106,7 @@ python 2_finetune.py <ap_model_path> --maxmem <memory budget> --targ_bits <targe
 # --maxmem 5.0 --targ_bits 3.5
 ```
 
-### 4. Save estimator parameters.
+### 4. Save estimator parameters
 Run `3_save_estimator.py` to create error estimators.
 ```bash
 python 3_save_estimator.py <model> <ap_model_path> --arr_path <finetuned result>
@@ -124,7 +119,7 @@ python 3_save_estimator.py <model> <ap_model_path> --arr_path <finetuned result>
 # finetuned_results/anyprec-()-w8_orig3-gc1-c4_s100_blk512/finetuned_max5.0_3b-6b_th_pb_train_0.01_1.0_5ep_targ3.5b_init_0-1000_adam.pt
 ```
 
-### 5. Save threshold values.
+### 5. Save threshold values
 Run `4_save_th.py` to save threshold values.
 
 ```bash
