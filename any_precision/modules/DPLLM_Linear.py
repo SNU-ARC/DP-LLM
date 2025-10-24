@@ -67,10 +67,11 @@ class DPLLM_Linear(nn.Module):
         self.my_layernorm = my_layernorm
 
     def prune_precisions(self):
-        self.qweight = self.qweight[:max(self.precisions)]
+        self.qweight = self.qweight[:min(max(self.precisions), self.maxmem)]
         for bit in self.supported_bits:
             if bit not in self.precisions:
                 delattr(self, f'lut{bit}')
+        self.precisions = [bit for bit in self.precisions if bit <= self.maxmem]
 
     def forward(self, x, **kwargs):
 
