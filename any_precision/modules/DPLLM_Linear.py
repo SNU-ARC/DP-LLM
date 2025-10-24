@@ -52,7 +52,7 @@ class DPLLM_Linear(nn.Module):
         else:
             self.register_buffer(
                 "jl",
-                est_params
+                est_params.to(dtype).to(device)
             )
         self.est_T = est_T
         self.b_l = b_l

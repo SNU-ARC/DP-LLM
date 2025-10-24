@@ -40,7 +40,7 @@ parser.add_argument("--lr_decay", type=float, default=1.0,
                     help="Learning rate decaying for each epoch. Not used.")
 parser.add_argument("--alpha_decay", type=float, default=1.0,
                     help="Alpha decay for each epoch. Not used.")
-parser.add_argument("--init_targ", action="store_true", default=True,
+parser.add_argument("--init_targ", action="store_true",
                     help="Set initializing value as target precision. If not given, random initialization is used.")
 # ===============================
 
